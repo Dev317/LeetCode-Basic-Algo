@@ -1,0 +1,64 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class NodeItem {
+    TreeNode node;
+    int depth;
+    
+    public NodeItem(TreeNode node) {
+        this.node = node;
+        depth = 1;
+    }
+    
+    public NodeItem(TreeNode node, int depth) {
+        this.node = node;
+        this.depth = depth;
+    }
+}
+
+class Solution {
+    public int minDepth(TreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+        
+        Queue<NodeItem> Q = new ArrayDeque<>();
+        
+        NodeItem nodeItem = new NodeItem(root);
+        Q.add(nodeItem);
+        
+        while(!Q.isEmpty()) {
+            NodeItem currNodeItem = Q.poll();
+            
+            TreeNode currNode = currNodeItem.node;
+            int currDepth = currNodeItem.depth;
+            
+            if (currNode.left == null && currNode.right == null) {
+                return currDepth;
+            }
+            
+            if (currNode.left != null) {
+                Q.add(new NodeItem(currNode.left, currDepth + 1));
+            }
+            
+            if (currNode.right != null) {
+                Q.add(new NodeItem(currNode.right, currDepth + 1));
+            }
+            
+        }
+        
+        return 0;
+    }
+}
