@@ -1,0 +1,37 @@
+class Solution {
+    public int numSquares(int n) {
+        int ans = 0;
+        
+        Queue<Integer> Q = new ArrayDeque<>();
+        Set<Integer> visitedNode = new HashSet<>();
+        
+        Q.add(0);
+        visitedNode.add(0);
+        
+        while(!Q.isEmpty()) {
+            int size = Q.size();
+            ans++;
+            
+            while(size-- > 0) {
+                int curNode = Q.poll();
+                
+                for (int i = 1; i * i <= n; i++) {
+                    int tempVal = curNode + i*i;
+                    if (tempVal == n) {
+                        return ans;
+                    }
+                    
+                    if (tempVal > n) {
+                        break;
+                    }
+                    
+                    if (!visitedNode.contains(tempVal)) {
+                        Q.add(tempVal);
+                        visitedNode.add(tempVal);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
