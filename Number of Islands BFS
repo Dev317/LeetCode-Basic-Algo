@@ -1,0 +1,66 @@
+class Solution {
+    class Coordinate {
+        int row;
+        int col;
+        
+        public Coordinate(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+    }
+    
+    
+    public int numIslands(char[][] grid) {
+        if(grid == null | grid.length == 0) {
+            return 0;
+        }
+        
+        int numIslands = 0;
+        
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == '1') {
+                    // for island visited cell, mark it as '2'
+                    grid[i][j] = '2';
+                    ++numIslands;
+                    bfs(grid,i,j);
+                }
+            }
+        }
+        
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                System.out.print(grid[i][j] + " ");
+            }
+            System.out.println();
+        }
+            
+        return numIslands;
+    }
+    
+    public boolean isInside(int curRow, int curCol, int maxRow, int maxCol) {
+        return (curRow >= 0) && (curCol >= 0) && (curRow < maxRow) && (curCol < maxCol);
+    }
+    
+    public void bfs(char[][] grid, int curRow, int curCol) {
+        //                R  L  U   D
+        int rowCheck[] = {0, 0, 1, -1};
+        int colCheck[] = {1,-1, 0,  0};
+        
+        Queue<Coordinate> CoorQ = new ArrayDeque<>();
+        CoorQ.add(new Coordinate(curRow,curCol));
+        
+        while(!CoorQ.isEmpty()) {
+            Coordinate curCoordinate = CoorQ.poll();
+            
+        // checking for the 4 directions and convert to '2' if any visiting cell is '1' and add that cell to Q
+            for (int i = 0; i < 4; i++) {
+                if (isInside(curCoordinate.row + rowCheck[i],curCoordinate.col + colCheck[i], grid.length, grid[0].length) 
+                    && grid[curCoordinate.row + rowCheck[i]][curCoordinate.col + colCheck[i]] == '1') {
+                    CoorQ.add(new Coordinate(curCoordinate.row + rowCheck[i], curCoordinate.col + colCheck[i]));
+                    grid[curCoordinate.row + rowCheck[i]][curCoordinate.col + colCheck[i]] = '2';
+                }
+            }
+        }
+    }
+}
