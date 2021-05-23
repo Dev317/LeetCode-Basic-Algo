@@ -1,0 +1,58 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+ 
+ // Using recursion
+class Solution {
+    List<Integer> output = new ArrayList<>();
+    
+    public List<Integer> preorderTraversal(TreeNode root) {
+        if (root == null) {
+            return output;
+        }
+        output.add(root.val);
+        if (root.left != null) preorderTraversal(root.left);
+        if (root.right != null) preorderTraversal(root.right);
+        return output;
+    }
+}
+
+//Iterative approach
+class Solution {
+    List<Integer> output = new ArrayList<>();
+    
+    public List<Integer> preorderTraversal(TreeNode root) {
+        if (root == null) return output;
+        
+        ArrayDeque<TreeNode> Q = new ArrayDeque<>();
+        Q.add(root);
+        
+        while(!Q.isEmpty()) {
+            TreeNode currNode = Q.poll();
+            output.add(currNode.val);
+            
+            if (currNode.right != null) {
+                Q.offerFirst(currNode.right);
+            }
+            
+            if (currNode.left != null) {
+                Q.offerFirst(currNode.left);
+            }
+            
+        }
+        
+        return output;
+    }
+}
