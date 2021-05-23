@@ -1,3 +1,8 @@
+___________________________________________________________________________________________________________________________
+
+** Pre-order traversal is to visit the root first. Then traverse the left subtree. Finally, traverse the right subtree. **
+___________________________________________________________________________________________________________________________
+
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
