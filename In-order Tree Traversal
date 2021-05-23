@@ -1,0 +1,74 @@
+
+ _________________________________________________________________________________________________________________________
+ 
+ ** In-order traversal is to traverse the left subtree first. Then visit the root. Finally, traverse the right subtree. **
+ 
+ _________________________________________________________________________________________________________________________
+ 
+ /**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+ 
+ //Using recursion
+class Solution {
+    List<Integer> output = new ArrayList<>();
+    
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return output;
+        }
+        
+        if (root.left != null) {
+            inorderTraversal(root.left);
+        }
+        
+        output.add(root.val);
+        
+        if (root.right != null) {
+            inorderTraversal(root.right);        
+        }
+        
+        return output;
+    }
+}
+
+//Iterative
+class Solution {
+    List<Integer> output = new ArrayList<>();
+    
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return output;
+        }
+        
+        Stack<TreeNode> stackTreeNode = new Stack<>();
+    
+        TreeNode currNode = root;
+        
+        while (currNode != null || !stackTreeNode.isEmpty()) {
+            while(currNode != null) {
+                stackTreeNode.push(currNode);
+                currNode = currNode.left;
+            }
+            
+            currNode = stackTreeNode.pop();
+            output.add(currNode.val);
+            
+            currNode = currNode.right;
+            
+        }
+        return output;
+    }
+}
