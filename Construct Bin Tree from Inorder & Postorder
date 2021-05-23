@@ -1,0 +1,56 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        return util(inorder, postorder, 0, postorder.length - 1, 0, inorder.length - 1);
+    }
+    
+    public TreeNode util(int[] inorder, int[] postorder, int postorderFirstIndex, int postorderLastIndex, 
+                         int inorderFirstIndex, int inorderLastIndex) {
+        
+        if (inorderFirstIndex > inorderLastIndex) {
+            return null;
+        }
+        
+        // root.val = 3
+        
+        // left tree {9} -> left of 3 in inorder 
+        // right tree {15,20,7} -> right of 3 in inorder
+        
+        
+        TreeNode root = new TreeNode(postorder[postorderLastIndex]);
+        
+        int indexOfRootInorderArray = 0;
+        for (int i = 0; i < inorder.length; i++) {
+            if (inorder[i] == root.val) {
+                indexOfRootInorderArray = i;
+            }
+        }
+        
+        // left inorder array = {9}, inorderFirstIndex = 0, inorderLastIndex = indexOfRootInorderArray - 1
+        // right inorder array = {15,20,7}, postorderFirstIndex = indexOfRootInorderArray + 1, postorderLastIndex = inorderLastIndex
+        
+        // left postorder array = {9}, postorderFirstIndex =  postorderFirstIndex , postorderLastIndex = postorderFirstIndex + (indexOfRootInorderArray - 1 - inorderFirstIndex)
+        // right postorder array = {15,7,20}, postorderFirstIndex = postorderLastIndex - inorderLastIndex + indexOfRootInorderArray, postorderLastIndex = postorderLastIndex - 1
+        
+        
+        root.left = util(inorder, postorder, postorderFirstIndex, postorderFirstIndex + (indexOfRootInorderArray - 1 - inorderFirstIndex), inorderFirstIndex, indexOfRootInorderArray - 1);
+        
+        root.right = util(inorder, postorder, postorderLastIndex - inorderLastIndex + indexOfRootInorderArray, postorderLastIndex - 1, indexOfRootInorderArray + 1, inorderLastIndex);
+        
+        return root;
+    }
+}
