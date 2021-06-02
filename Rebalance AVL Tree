@@ -1,0 +1,149 @@
+import java.util.*;
+import java.lang.Math;
+
+class Node {
+    private int val;
+    private Node left;
+    private Node right;
+
+    public Node() {}
+
+    public Node(int val) {
+        this.val = val;
+    }
+
+    public Node(int val, Node left, Node right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+
+    public int getVal() {
+        return val;
+    }
+
+    public Node getLeft() {
+        return left;
+    }
+
+    public Node getRight() {
+        return right;
+    }
+
+    public void setVal(int newVal) {
+        val = newVal;
+    }
+
+    public void setLeft(Node newLeft) {
+        left = newLeft;
+    }
+
+    public void setRight(Node newRight) {
+        right = newRight;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int size = sc.nextInt();
+
+        Node rootNode = null;
+
+        for (int i = 0; i < size; i++) {
+            rootNode = insert(rootNode, sc.nextInt());
+        }
+
+        // System.out.println(countLevel(rootNode));
+        
+        while(!isAVL(rootNode)) {
+            rootNode = rebalance(rootNode);
+        }
+
+        System.out.println(countLevel(rootNode));
+    }
+
+    public static Node insert(Node rootNode, int value) {
+        if (rootNode == null) {
+            return (new Node(value));
+        } else {
+            if (value < rootNode.getVal()) {
+                rootNode.setLeft(insert(rootNode.getLeft(), value));
+            } else if (value >= rootNode.getVal()) {
+                rootNode.setRight(insert(rootNode.getRight(), value));
+            }
+        }
+        return rootNode;
+    }
+
+    public static int countLevel(Node rootNode) {
+        if (rootNode == null) {
+            return -1;
+        } 
+
+        return 1 + Math.max(countLevel(rootNode.getLeft()), countLevel(rootNode.getRight()));
+    }
+
+    public static boolean isAVL(Node rootNode) {
+        if (rootNode == null) {
+            return true;
+        }
+
+        if (Math.abs(countLevel(rootNode.getLeft()) - countLevel(rootNode.getRight())) > 1) {
+            return false;
+        } return isAVL(rootNode.getLeft()) && isAVL(rootNode.getRight());
+    }
+
+    public static Node rotateRight(Node rootNode) {
+        Node subLeft = rootNode.getLeft();
+        Node subsubRight = subLeft.getRight();
+
+        rootNode.setLeft(subsubRight);
+        subLeft.setRight(rootNode);
+
+        return subLeft;
+    }
+
+    public static Node rotateLeft(Node rootNode) {
+        Node subRight = rootNode.getRight();
+        Node subsubLeft = subRight.getLeft();
+
+        rootNode.setRight(subsubLeft);
+        subRight.setLeft(rootNode);
+
+        return subRight;
+    }
+
+    public static Node rebalance(Node rootNode) {
+        if (Math.abs(countLevel(rootNode.getLeft()) - countLevel(rootNode.getRight())) > 1) {
+
+            if(countLevel(rootNode.getLeft()) > countLevel(rootNode.getRight())) {
+
+                Node subLeft = rootNode.getLeft();
+
+                if (countLevel(subLeft.getLeft()) >= countLevel(subLeft.getRight())) {
+                    rootNode = rotateRight(rootNode);
+                } else {
+                    rootNode.setLeft(rotateLeft(rootNode.getLeft()));
+                    rootNode = rotateRight(rootNode);
+                }
+            } else {
+                Node subRight = rootNode.getRight();
+
+                if (countLevel(subRight.getRight()) >= countLevel(subRight.getLeft())) {
+                    rootNode = rotateLeft(rootNode);
+                } else {
+                    rootNode.setRight(rotateRight(rootNode.getRight()));
+                    rootNode = rotateLeft(rootNode);
+                }
+            }
+        }
+
+        if (rootNode.getLeft() != null) rootNode.setLeft(rebalance(rootNode.getLeft()));
+        if (rootNode.getRight() != null) rootNode.setRight(rebalance(rootNode.getRight()));
+
+        return rootNode;
+    }
+
+} 
