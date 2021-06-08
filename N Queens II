@@ -1,0 +1,61 @@
+class Solution {
+    int count = 0;
+    
+    public int totalNQueens(int n) {
+        int[][] board = new int[n][n];
+        util(board, 0,n);
+        return count;
+    }
+    
+    
+    public boolean isSafe(int[][] board, int row, int col) {
+        // checking horizontal
+        for (int i = 0; i < col; i++) {
+            if (board[row][i] == 1) {
+                return false;
+            } 
+        }
+        
+        // checking left upper diagonal
+        for (int i = row, j = col; i >= 0 && j >=0 ; i--, j--) {
+            if (board[i][j] == 1) {
+                return false;
+            }
+        }
+        
+        // checking left lower diagonal
+        for (int i = row, j = col; i < board.length && j >= 0; i++, j--) {
+            if (board[i][j] == 1) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    
+    public boolean util(int [][] board, int col, int n) {
+        if (col == n) {
+            count++;
+            col -= 1;
+            for (int i = 0; i < n; i++) {
+                board[i][col] = 0;
+            }
+            
+            return true;
+        }
+        
+        for (int i = 0; i < n; i++) {
+            
+            if (isSafe(board,i,col)) {
+                board[i][col] = 1;
+
+                if(!util(board, col + 1, n)) {
+                    board[i][col] = 0;;
+                }
+            }
+        }
+        
+        return false;
+    }
+}
