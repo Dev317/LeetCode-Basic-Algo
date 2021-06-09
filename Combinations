@@ -1,0 +1,23 @@
+class Solution {
+    List<List<Integer>> combineList = new ArrayList<>();
+    
+    public List<List<Integer>> combine(int n, int k) {
+        
+        ArrayList<Integer> currList = new ArrayList<>();
+        util(currList, 1, n,k);
+        return combineList;
+    }
+    
+    public void util(ArrayList<Integer> list, int lowerLimit, int n, int k) {
+        if(list.size() == k) {
+            combineList.add(new ArrayList<>(list));
+            return;
+        }
+        
+        for(int i = lowerLimit; i <= n; i++) {
+            list.add(i);
+            util(list, i + 1, n , k);
+            list.remove(list.size() - 1);
+        }
+    }
+}
