@@ -1,0 +1,26 @@
+class Solution {
+    List<String> resultList = new ArrayList<>();
+    
+    public List<String> generateParenthesis(int n) {
+        util(new char[n * 2],0,0,0,n);
+        return resultList;
+    }
+    
+    public void util(char[] tempStr, int pos, int numClosingPar, int numOpeningPar, int n) {
+        if(numClosingPar == n) {
+            resultList.add(new String(tempStr));
+            System.out.println("----");
+            return;
+        } else {
+            if (numOpeningPar > numClosingPar) {
+                tempStr[pos] = ')';
+                util(tempStr, pos+1, numClosingPar+1, numOpeningPar,n);
+            }
+            
+            if (numOpeningPar < n) {
+                tempStr[pos] = '(';
+                util(tempStr, pos+1, numClosingPar, numOpeningPar+1,n);
+            }
+        }
+    }
+}
