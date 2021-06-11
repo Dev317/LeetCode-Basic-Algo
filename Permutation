@@ -1,0 +1,36 @@
+class Solution {
+    List<List<Integer>> resultList = new ArrayList<>();
+    
+    public List<List<Integer>> permute(int[] nums) {
+        util(nums, 0, nums.length - 1);
+        return resultList;
+    }
+    
+    //backtracking
+    public void util (int[] nums, int startIndex, int endIndex) {
+        if (startIndex == endIndex) {
+            // copy int array to int list
+            List<Integer> newList = new ArrayList<>();
+            for (int i : nums) {
+                newList.add(i);
+            }
+            
+            resultList.add(newList);
+            return;
+        } else {
+            for (int i = startIndex; i <= endIndex; i++) {
+                nums = swap(nums, startIndex, i);
+                util(nums, startIndex + 1, endIndex);
+                nums = swap(nums,startIndex, i);
+            }
+        }
+    }
+    
+    // swapping method
+    public int[] swap(int[] nums, int pos1, int pos2) {
+        int tempVal = nums[pos1];
+        nums[pos1] = nums[pos2];
+        nums[pos2] = tempVal;
+        return nums;
+    }
+}
