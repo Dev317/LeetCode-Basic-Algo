@@ -1,0 +1,36 @@
+/**Cases
+Input: nums = [4,5,8,9,10,11,12,0,1,2,3]
+                          | 
+
+Input: nums = [4,0,1,2,3]
+                   |
+
+Input: nums = [4,5,0,1,2,3]
+                   |
+**/
+
+class Solution {
+    public int findMin(int[] nums) {
+        return helperFunction(nums, 0, nums.length - 1);
+    }
+    
+    public int helperFunction(int[] nums, int leftPointer, int rightPointer) {
+        int mid = (leftPointer + rightPointer)/2;
+        
+        if (leftPointer >= rightPointer) return nums[0];
+            
+        if (mid != 0 && nums[mid] < nums[mid - 1]) return nums[mid];
+        
+        if (mid < nums.length - 1 && nums[mid] > nums[mid + 1]) return nums[mid + 1];
+        
+        
+        if (nums[leftPointer] <= nums[mid]) {
+            
+            return Math.min(helperFunction(nums, leftPointer, mid - 1), helperFunction(nums, mid + 1, rightPointer));
+            
+        } else {
+        
+            return Math.min(helperFunction(nums, mid + 1, rightPointer), helperFunction(nums, leftPointer, mid - 1));
+        }
+    }
+}
