@@ -1,0 +1,29 @@
+class Solution {
+    public int search(int[] nums, int target) {
+        return helperFunction(nums, target, 0, nums.length - 1);
+    }
+    
+    public int helperFunction(int[] nums, int target, int leftPointer, int rightPointer) {
+        int mid = (leftPointer + rightPointer)/2;
+        
+        if (leftPointer > rightPointer) return - 1;
+        
+        if (nums[mid] == target) return mid;
+        
+        if (nums[leftPointer] <= nums[mid]) {
+            
+            if (nums[leftPointer] <= target && target <= nums[mid]) {
+                return helperFunction(nums, target, leftPointer, mid - 1);
+            } else {
+                return helperFunction(nums, target, mid + 1, rightPointer);
+            }
+        } else {
+            if (nums[mid] <= target && target <= nums[rightPointer]) {
+                return helperFunction(nums, target, mid + 1, rightPointer);
+            } else {
+                return helperFunction(nums, target, leftPointer, mid - 1);
+            }
+            
+        }
+    }
+}
